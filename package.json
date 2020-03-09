@@ -1,0 +1,14 @@
+{
+  "name": "ironeko-featured-sites",
+  "version": "1.0.0",
+  "description": "Adds a featured sites custom post type and custom blocks to set its data",
+  "main": "build/index.js",
+  "scripts": {
+    "build": "wp-scripts build"
+  },
+  "author": "ironeko",
+  "license": "ISC",
+  "devDependencies": {
+    "@wordpress/scripts": "7.1.2"
+  }
+}
