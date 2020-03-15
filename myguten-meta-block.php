@@ -26,27 +26,27 @@ function create_posttype() {
 // Hooking up our function to theme setup
 add_action( 'init', 'create_posttype' );
 
-function featuredsites_get_palette( $post ) {
-  //return get_the_author_meta( 'display_name', (int) $post['author'] );
-  return get_metadata('post', $post['id'], 'paletteData');
-}
-
-function featuredsites_add_palette_data() {
-  register_rest_field( 'featuredsites',
-    'palette',
-    array(
-      'get_callback' => 'featuredsites_get_palette'
-    )
-  );
-}
-add_action( 'rest_api_init', 'featuredsites_add_palette_data' );
+// function featuredsites_get_palette( $post ) {
+//   //return get_the_author_meta( 'display_name', (int) $post['author'] );
+//   return get_metadata('post', $post['id'], 'paletteData');
+// }
+//
+// function featuredsites_add_palette_data() {
+//   register_rest_field( 'featuredsites',
+//     'palette',
+//     array(
+//       'get_callback' => 'featuredsites_get_palette'
+//     )
+//   );
+// }
+// add_action( 'rest_api_init', 'featuredsites_add_palette_data' );
 
 function myguten_register_post_meta() {
-    register_post_meta( 'featuredsites', 'palette', array(
-	'show_in_rest' => true,
-        'single' => true,
-        'type' => 'string',
-    ) );
+  //   register_post_meta( 'featuredsites', 'palette', array(
+	// 'show_in_rest' => true,
+  //       'single' => true,
+  //       'type' => 'string',
+  //   ) );
     register_post_meta( 'featuredsites', 'paletteData', array(
         'show_in_rest' => array(
            'schema' => array(
