@@ -8,11 +8,6 @@ registerBlockType( 'ironeko/palette-data', {
     category: 'common',
 
     attributes: {
-        palette: {
-            type: 'string',
-            source: 'meta',
-            meta: 'palette',
-        },
       	paletteData: {
             type: 'array',
             source: 'meta',
