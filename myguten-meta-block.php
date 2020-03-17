@@ -63,17 +63,17 @@ function myguten_register_post_meta() {
 }
 add_action( 'init', 'myguten_register_post_meta' );
 
-function myguten_enqueue() {
+function featured_palette_enqueue() {
     wp_enqueue_script(
-        'myguten-script',
+        'palette-script',
         plugins_url( 'build/index.js', __FILE__ ),
         array( 'wp-blocks', 'wp-element', 'wp-components' )
     );
 
    wp_enqueue_style(
-      'myguten-script',
+      'palette-script',
       plugins_url( 'index.css', __FILE__ ),
       array()
    );
 }
-add_action( 'enqueue_block_editor_assets', 'myguten_enqueue' );
+add_action( 'enqueue_block_editor_assets', 'featured_palette_enqueue' );
