@@ -71,7 +71,7 @@ registerBlockType( 'ironeko/palette-data', {
 
       return (
           <div style={{ padding: '0.5rem', flex: 1, flexDirection: 'row' }}>
-            <TestButton palette={attributes.paletteData}/>
+            Test
           </div>
       );
     },
