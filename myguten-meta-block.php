@@ -65,13 +65,13 @@ add_action( 'init', 'myguten_register_post_meta' );
 
 function featured_palette_enqueue() {
     wp_enqueue_script(
-        'palette-script',
+        'palette-script-js',
         plugins_url( 'build/index.js', __FILE__ ),
         array( 'wp-blocks', 'wp-element', 'wp-components' )
     );
 
    wp_enqueue_style(
-      'palette-script',
+      'palette-script-css',
       plugins_url( 'index.css', __FILE__ ),
       array()
    );
