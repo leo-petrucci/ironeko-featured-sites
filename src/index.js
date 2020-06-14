@@ -1,6 +1,8 @@
 import { registerBlockType } from '@wordpress/blocks';
-import { ColorPalette } from '@wordpress/components';
+import { TextControl } from '@wordpress/components';
+import { FormFileUpload } from '@wordpress/components';
 import { withState } from '@wordpress/compose';
+import { SketchPicker } from 'react-color';
 
 registerBlockType( 'ironeko/palette-data', {
     title: 'Palette Meta Block',
@@ -25,14 +27,10 @@ registerBlockType( 'ironeko/palette-data', {
         console.log(`Setting value: ${color} for index: ${index}`);
         let arr = [...attributes.paletteData];
         arr[index] = color;
-        // attributes.paletteData[index] = color;
-        // console.log('Array is:');
-        // console.log(arr);
         setAttributes( { paletteData: arr } );
-        // console.log('Final data is:');
-        // console.log(attributes.paletteData);
+        console.log(attributes)
       }
-      function removePalette({index}) {
+      function removePalette( index ) {
         console.log(`removing palette at index: ${index}`)
         let arr = [...attributes.paletteData];
         arr.splice(index, 1);
@@ -40,38 +38,102 @@ registerBlockType( 'ironeko/palette-data', {
         console.log(attributes)
       }
 
-      function MyCounter( { count, setState, palette } ) {
-      	return (
-      		<>
-      			<button onClick={ () => setState( ( state ) => ( { count: state.count + 1 } ) ) }>
-      				Add Palette
-      			</button>
-            <div className={'paletteContainer'}>
-            { Array.apply(null, Array(count)).map((each,i) =>
-              <div className={'paletteSnippet'}>
-                <div style={{ backgroundColor: palette[i] }} className={'palettePreview'}/>
-                <ColorPalette
-                   value={ palette[i] }
-                   onChange={ (color) => updatePalette( color, i ) }
-                   className={ 'addPalette' }
-                />
-                <button className={'removePalette'} onClick={ () => removePalette( i )}>
-                  Remove
-                </button>
-              </div>
-            )}
+
+      const MyColorPalette = withState({ active: false, color: '' })( ({ index, setState, active, color }) => {
+
+          return (
+            <div className={`colorPicker`}>
+              <div className={`colorPreview`} style={{background: attributes.paletteData[index] }}  onClick={ () => setState( ( state ) => ( { active: !active} ) ) }></div>
+              { active &&
+                <div className={`container`}>
+                  <SketchPicker
+                    color={ color }
+                    onChange={ ( color ) => {
+                      setState( { color: color.hex } )
+                    } }
+                  />
+                  <button className={`confirm`} onClick={() => updatePalette(color, index)}>Confirm</button>
+                </div>
+              }
             </div>
-      		</>
-      	);
-      }
+          )
+      } );
 
       const TestButton = withState( {
       	count: !attributes.paletteData ? 0 : attributes.paletteData.length,
       } )( MyCounter );
 
+      function MyCounter( { count, setState } ) {
+      	return (
+      		<>
+            <h5 className={`title`}>Select Palette</h5>
+            <div className={`palettes`}>
+              { Array.apply(null, Array(count)).map((each,i) =>
+                <div key={i} className={`palette`}>
+                  <MyColorPalette index={i}/>
+                  <button className={'removePalette'} onClick={ () => removePalette( i )}>
+                    <i className="gg-close"></i>
+                  </button>
+                </div>
+              )}
+              <button className={`add`} onClick={ () => setState( ( state ) => ( { count: state.count + 1 } ) ) }>
+                Add
+              </button>
+            </div>
+      		</>
+      	);
+      }
+
       return (
           <div style={{ padding: '0.5rem', flex: 1, flexDirection: 'row' }}>
-            <TestButton palette={attributes.paletteData}/>
+            <TestButton/>
+          </div>
+      );
+    },
+
+    // No information saved to the block
+    // Data is saved to post meta via attributes
+    save() {
+        return null;
+    },
+} );
+
+registerBlockType( 'ironeko/website-data', {
+    title: 'Website Link Meta Block',
+    icon: 'smiley',
+    category: 'common',
+
+    attributes: {
+      	website: {
+            type: 'string',
+            source: 'meta',
+            meta: 'website',
+        }
+    },
+
+    edit( { setAttributes, attributes } ) {
+
+      const confirmLink = ( link ) => {
+        console.log(`Setting ${link}`)
+        setAttributes( { website: link } )
+      }
+
+      const WebsiteAddress = withState( {
+          link: attributes.website ? attributes.website : '',
+      } )( ( { link, setState } ) => (
+        <div className={`inputcontainer`}>
+          <TextControl
+              value={ link }
+              onChange={ ( link ) => setState( { link } ) }
+          />
+          <button className={`add`} onClick={() => confirmLink( link )}>Done</button>
+        </div>
+      ) );
+
+      return (
+          <div style={{ padding: '0.5rem', flex: 1, flexDirection: 'row' }}>
+            <h5 className={`title`}>Website Address</h5>
+            <WebsiteAddress/>
           </div>
       );
     },

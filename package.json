@@ -4,11 +4,17 @@
   "description": "Adds a featured sites custom post type and custom blocks to set its data",
   "main": "build/index.js",
   "scripts": {
+    "wp-env": "wp-env",
+    "start": "wp-scripts start",
     "build": "wp-scripts build"
   },
   "author": "ironeko",
   "license": "ISC",
   "devDependencies": {
+    "@wordpress/env": "^1.4.0",
     "@wordpress/scripts": "7.1.2"
+  },
+  "dependencies": {
+    "react-color": "^2.18.1"
   }
 }
